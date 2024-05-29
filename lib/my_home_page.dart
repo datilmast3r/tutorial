@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:tutorial/main.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Home Page'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to My Home Page!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
 }
