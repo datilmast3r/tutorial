@@ -1,10 +1,24 @@
-import 'package:english_words/english_words.dart';
-import 'custom_navigation_bar.dart'; // Import the file
+// Import the file
 import 'login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'favorites.dart';
-import 'my_home_page.dart';
+
+// Set color scheme for the app
+final ColorScheme colorScheme = ColorScheme.light(
+  primary: Colors.deepPurple,
+  secondary: Colors.deepPurpleAccent,
+  // Add more color properties as needed
+);
+
+// Set theme data for the app
+final ThemeData themeData = ThemeData(
+  colorScheme: colorScheme,
+  // Add more theme properties as needed
+);
+
+// Set the theme for the app
+ThemeData getAppTheme() {
+  return themeData;
+}
 
 void main() {
   runApp(MyApp());
@@ -16,30 +30,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: primaryGlobal,
-      ),
       title: 'Volunteer',
       home: LoginPage(), // LoginPage es ahora la página inicial
     );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
   }
 }

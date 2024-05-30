@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -22,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               ClipOval(
                 child: Image.asset(
-                  'images/volunteer_logo.jpg',
-                  width: 100.0,
-                  height: 100.0,
+                  'images/volunteer_logo.png',
+                  width: 150.0, // Aumenta el tamaño del logo
+                  height: 150.0, // Aumenta el tamaño del logo
                   fit: BoxFit.cover,
                 ),
               ),
@@ -61,20 +63,45 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton.icon(
+                  ElevatedButton(
                     onPressed: () {
-                      // Lógica para el inicio de sesión con Google
+                      // Implement Google Sign-In
+                      void loginWithGoogle() {}
                     },
-                    icon: Icon(Icons.login),
-                    label: Text('Google'),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: SvgPicture.asset('images/logos/logo-google.svg',
+                          height: 24, width: 24),
+                    ),
                   ),
                   SizedBox(width: 16),
-                  ElevatedButton.icon(
+                  ElevatedButton(
                     onPressed: () {
-                      // Lógica para el inicio de sesión con Twitter
+                      // añadir alerta emergente que diga funcion aun no disponible
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Función no disponible'),
+                            content: Text(
+                                'Lo sentimos, esta función aún no está disponible.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Aceptar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
-                    icon: Icon(Icons.login),
-                    label: Text('Twitter'),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: SvgPicture.asset('images/logos/logo-apple.svg',
+                          height: 24, width: 24),
+                    ),
                   ),
                 ],
               ),
