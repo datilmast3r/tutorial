@@ -16,16 +16,23 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Perfil',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
-          label: 'Favorites',
+          icon: Icon(Icons.chat),
+          label: 'Chat',
         ),
       ],
       currentIndex: widget.currentIndex,
       onTap: widget.onTap,
+      backgroundColor: Colors.blue, // Color de fondo del BottomNavigationBar
+      selectedItemColor: Colors.white, // Color de los ítems seleccionados
+      unselectedItemColor: Colors.grey, // Color de los ítems no seleccionados
     );
   }
 }

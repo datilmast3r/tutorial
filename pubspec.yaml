@@ -1,4 +1,4 @@
-name: tutorial
+name: volunteer
 description: "tutorial que deberia haber echo hace meses"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,6 +41,18 @@ dependencies:
   cupertino_icons: ^1.0.6
   crypto: ^3.0.3
   firebase_core: ^2.32.0
+  firebase_auth: ^4.20.0
+  swipe_cards: ^2.0.0+1
+  cloud_firestore: ^4.17.5
+  logger: ^2.3.0
+  logging: ^1.2.0
+  googleapis_auth: ^1.6.0
+  firebase_storage: ^11.7.7
+  firebase_messaging: ^14.9.4
+  cached_network_image: ^3.3.1
+  emoji_picker_flutter: ^2.2.0
+  image_picker: ^1.1.2
+  gallery_saver_updated: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +79,9 @@ flutter:
   
   assets:
       - images/volunteer_logo.png
+      - images/volunteer_logo_fondo.png
       - images/logos/
+      - assets/profile_image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

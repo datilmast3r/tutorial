@@ -12,7 +12,12 @@
           "package_name": "com.volunteer.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "439759902053-q2cm3ps5dc62mjfm6c7dc41bjeo2pgj8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCKxDNtzSg2biJvnAeJs4cQ7vKvYNmRcMk"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439759902053-q2cm3ps5dc62mjfm6c7dc41bjeo2pgj8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "439759902053-io2le6i13qv16kam2m9roc6bsfoh900o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tutorial"
+              }
+            }
+          ]
         }
       }
     }
