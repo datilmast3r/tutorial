@@ -35,21 +35,20 @@ class _RegisterPageState extends State<RegisterPage> {
             'email': _email,
             'age': _age,
             'description': null,
-            'profilePicture': null,
+            'imageUrl': null,
+            'role': 1,
           });
-          // Navigate to the next page or show success message
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Autentication()),
           );
         } catch (e) {
-          // Handle errors more specifically here
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text('Error'),
-                content: Text(e.toString()), // Show the error message
+                content: Text(e.toString()),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -63,7 +62,6 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         }
       } else {
-        // Handle password mismatch
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -88,63 +86,112 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Registro')),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          // Added to enable scrolling when keyboard is visible
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                onSaved: (value) => _name = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Por favor ingrese su nombre' : null,
-                decoration: InputDecoration(labelText: 'Nombre'),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                  Image.asset('./images/volunteer_logo_fondo.png', height: 120),
+                  SizedBox(height: 40),
+                  _buildTextField(
+                      'Nombre',
+                      (value) => _name = value!,
+                      (value) => value!.isEmpty
+                          ? 'Por favor ingrese su nombre'
+                          : null),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                      'Email',
+                      (value) => _email = value!,
+                      (value) =>
+                          value!.isEmpty ? 'Por favor ingrese su email' : null),
+                  SizedBox(height: 20),
+                  _buildTextField('Edad', (value) => _age = value!, (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese su edad';
+                    }
+                    final n = int.tryParse(value);
+                    if (n == null) {
+                      return 'Por favor ingrese un número válido';
+                    }
+                    if (n <= 0) {
+                      return 'Por favor ingrese un número mayor que 0';
+                    }
+                    return null;
+                  }),
+                  SizedBox(height: 20),
+                  _buildPasswordField(
+                      'Contraseña', (value) => _password = value!),
+                  SizedBox(height: 20),
+                  _buildPasswordField('Confirmar Contraseña',
+                      (value) => _confirmPassword = value!),
+                  SizedBox(height: 30),
+                  _buildRegisterButton(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                ],
               ),
-              TextFormField(
-                onSaved: (value) => _email = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Por favor ingrese su email' : null,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextFormField(
-                onSaved: (value) => _age = value!,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su edad';
-                  }
-                  final n = int.tryParse(value);
-                  if (n == null) {
-                    return 'Por favor ingrese un número válido';
-                  }
-                  if (n <= 0) {
-                    return 'Por favor ingrese un número mayor que 0';
-                  }
-                  return null; // Si pasa todas las validaciones, retorna null (sin error)
-                },
-                decoration: InputDecoration(labelText: 'Edad'),
-              ),
-              TextFormField(
-                onSaved: (value) => _password = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Por favor ingrese su contraseña' : null,
-                obscureText: true, // Hide password
-                decoration: InputDecoration(labelText: 'Contraseña'),
-              ),
-              TextFormField(
-                onSaved: (value) => _confirmPassword = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Por favor confirme su contraseña' : null,
-                obscureText: true, // Hide password
-                decoration: InputDecoration(labelText: 'Confirmar Contraseña'),
-              ),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text('Registrarse'),
-              ),
-            ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, Function(String?) onSaved,
+      String? Function(String?)? validator) {
+    return TextFormField(
+      onSaved: onSaved,
+      validator: validator,
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField(String label, Function(String?) onSaved) {
+    return TextFormField(
+      onSaved: onSaved,
+      validator: (value) =>
+          value!.isEmpty ? 'Por favor ingrese su contraseña' : null,
+      obscureText: true,
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterButton() {
+    return ElevatedButton(
+      onPressed: _register,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+      ),
+      child: Text(
+        'Registrarse',
+        style: TextStyle(color: Theme.of(context).primaryColor),
       ),
     );
   }

@@ -2,42 +2,42 @@ class Usuario {
   Usuario({
     required this.descripcion,
     required this.nombre,
-    required this.id,
-    required this.email,
     required this.edad,
+    required role,
+    required imageUrl,
   });
   late String descripcion;
   late String nombre;
-  late String id;
-  late String email;
-  late String edad;
+  late int edad;
+  late String role;
+  late String imageUrl;
 
   Usuario.fromJson(Map<String, dynamic> json) {
     descripcion = json['descripcion'] ?? '';
     nombre = json['nombre'] ?? '';
-    id = json['id'] ?? '';
-    email = json['email'] ?? '';
     edad = json['edad'] ?? '';
+    imageUrl = json['imageUrl'] ?? '';
+    role = json['role'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['descripcion'] = descripcion;
     data['nombre'] = nombre;
-    data['id'] = id;
-    data['email'] = email;
     data['edad'] = edad;
+    data['role'] = role;
+    data['imageUrl'] = imageUrl;
 
     return data;
   }
 
   static Usuario fromMap(Map<String, dynamic> userData) {
     return Usuario(
-      descripcion: userData['descripcion'] ?? '',
-      nombre: userData['nombre'] ?? '',
-      id: userData['id'] ?? '',
-      email: userData['email'] ?? '',
-      edad: userData['edad'] ?? '',
+      descripcion: userData['description'] ?? '',
+      nombre: userData['name'] ?? '',
+      edad: userData['age'] ?? '',
+      imageUrl: userData['imageUrl'] ?? '',
+      role: userData['role'] ?? '',
     );
   }
 }

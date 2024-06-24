@@ -1,65 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer/models/Usuario.dart';
-import 'package:volunteer/models/chat_user.dart';
+import 'package:volunteer/page_reload_notifier.dart';
 import '../widgets/custom_navigation_bar.dart';
-import 'my_home_page.dart'; // Asegúrate de tener esta página
-import 'profile_page.dart'; // Asegúrate de tener esta página
-import 'chat_page.dart'; // Asegúrate de tener esta página
+import 'my_home_page.dart';
+import 'profile_page.dart';
+import 'chat_page.dart';
 
 class MainScreen extends StatefulWidget {
   final Usuario usuario;
   MainScreen({Key? key, required this.usuario}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   int _selectedIndex = 1;
+  late List<Widget> _pages;
+  late PageReloadNotifier
+      _pageReloadNotifier; // Crear una instancia de PageReloadNotifier
 
-  final List<Widget> _pages = [
-    ProfilePage(),
-    MyHomePage(),
-    ChatPage(
-        user: ChatUser(
-      image:
-          'https://imgs.search.brave.com/9q4Z617XjNLgmF-_S_FSUd24pGS_W1yMIuCkNJagsd0/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4x/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvaGVyb2ljb25z/LXVpLzI0L3VzZXIt/MTI4LnBuZw',
-      about: 'I love coding and exploring new technologies.',
-      name: 'Jane Doe',
-      createdAt: '2023-04-01T12:00:00Z',
-      isOnline: true,
-      id: 'user123',
-      lastActive: '2023-04-15T15:30:00Z',
-      email: 'jane.doe@example.com',
-      pushToken: 'exPushToken123',
-    )),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _pageReloadNotifier =
+        PageReloadNotifier(); // Inicializar PageReloadNotifier
+    _updatePages();
 
-  void _onItemTapped(int index) {
+    // Escuchar cambios en PageReloadNotifier
+    _pageReloadNotifier.addListener(_handleUserUpdate);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _pageReloadNotifier.removeListener(
+        _handleUserUpdate); // Usar la instancia para eliminar el listener
+    super.dispose();
+  }
+
+  void _updatePages() {
+    // Reconstruir la lista de páginas con el usuario actualizado
+    _pages = [
+      ProfilePage(usuario: widget.usuario, onChangesSaved: _updatePages),
+      MyHomePage(usuario: widget.usuario),
+      ChatPage(usuario: widget.usuario),
+    ];
+  }
+
+  void _handleUserUpdate() {
     setState(() {
-      _selectedIndex = index;
+      _updatePages(); // Actualizar las páginas cuando el usuario cambie
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => _pages[index],
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
+      body: Center(
+        child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
-            _selectedIndex = index; // Actualiza la pestaña seleccionada
+            _selectedIndex = index;
           });
         },
-        // Asegúrate de configurar tu CustomNavigationBar correctamente
       ),
     );
   }

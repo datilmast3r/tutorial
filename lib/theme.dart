@@ -4,13 +4,13 @@ class AppTheme {
   static ThemeData get lightTheme {
     // Define light theme settings
     return ThemeData(
-      primaryColor: Colors.blue,
+      primaryColor: const Color.fromARGB(255, 243, 33, 198),
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: Colors.orange, // Reemplazo para accentColor
       ),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: const Color.fromARGB(255, 255, 184, 251),
       appBarTheme: AppBarTheme(
-        color: Colors.blue,
+        color: const Color.fromARGB(255, 243, 33, 198),
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(
             color: Colors.white,

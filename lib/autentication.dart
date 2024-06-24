@@ -15,12 +15,6 @@ class Autentication extends StatefulWidget {
 class _AutenticationState extends State<Autentication> {
   @override
   void initState() {
-    Usuario usuariodeejemplo = Usuario(
-        descripcion: "Diseñador gráfico especializado en UX/UI",
-        nombre: "Ana Gómez",
-        id: "2",
-        email: "ana.gomez@example.com",
-        edad: "28");
     super.initState();
     // Verificar si el usuario está autenticado al iniciar la pantalla
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
@@ -38,10 +32,10 @@ class _AutenticationState extends State<Autentication> {
             if (documentSnapshot.exists) {
               Map<String, dynamic> userData =
                   documentSnapshot.data() as Map<String, dynamic>;
+              Usuario usuario = Usuario.fromMap(userData);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                    builder: (context) =>
-                        MainScreen(usuario: usuariodeejemplo)),
+                    builder: (context) => MainScreen(usuario: usuario)),
               );
             } else {
               // Handle the case when the user document does not exist
@@ -49,10 +43,6 @@ class _AutenticationState extends State<Autentication> {
           }).catchError((error) {
             // Handle any errors that occur during the document retrieval
           });
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => MainScreen(usuario: usuariodeejemplo)),
-          );
         }
       });
     });

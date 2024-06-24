@@ -1,9 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:volunteer/models/Usuario.dart';
 import 'package:volunteer/pages/login_page.dart';
 import 'package:volunteer/pages/profile_edit_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  final Usuario usuario;
+  final VoidCallback onChangesSaved;
+  ProfilePage({Key? key, required this.usuario, required this.onChangesSaved})
+      : super(key: key);
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String username = '';
+  String userDescription = '';
+  int userAge = 0;
+  String profileImageUrl = 'assets/profile_image.png'; // Valor por defecto
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var userData = await FirebaseFirestore.instance
+          .collection('Usuarios')
+          .doc(user.uid)
+          .get();
+      setState(() {
+        username = userData['name'];
+        userDescription = userData['description'];
+        userAge = userData['age'];
+        profileImageUrl = userData['imageUrl'] ?? 'assets/profile_image.png';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,16 +50,11 @@ class ProfilePage extends StatelessWidget {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (value) async {
-              switch (value) {
-                case 'logout':
-                  // Aquí va tu lógica para desconectar al usuario, por ejemplo:
-                  FirebaseAuth.instance.signOut();
-                  // Redirige al usuario a la pestaña de login
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                  break;
-                default:
+              if (value == 'logout') {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
               }
             },
             itemBuilder: (BuildContext context) {
@@ -41,19 +74,20 @@ class ProfilePage extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/profile_image.png'),
+              backgroundImage: NetworkImage(
+                  profileImageUrl), // Modificado para mostrar la imagen de perfil del usuario
             ),
             SizedBox(height: 20),
             Text(
-              'Nombre de usuario',
+              username, // Modificado para mostrar el nombre del usuario
               style: TextStyle(fontSize: 20),
             ),
             Text(
-              'Descripción del usuario',
+              userDescription, // Modificado para mostrar la descripción del usuario
               style: TextStyle(fontSize: 16),
             ),
             Text(
-              'Edad: 25',
+              'Edad: $userAge', // Modificado para mostrar la edad del usuario
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
@@ -61,7 +95,10 @@ class ProfilePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfileEditPage()),
+                  MaterialPageRoute(
+                      builder: (context) => ProfileEditPage(
+                            onChangesSaved: widget.onChangesSaved,
+                          )),
                 );
               },
               child: Text('Editar perfil'),

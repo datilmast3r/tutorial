@@ -32,7 +32,6 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.10+1
   provider: ^6.0.0
-  sqflite: any
   path_provider: any
   google_sign_in: ^6.2.1
 
@@ -53,7 +52,6 @@ dependencies:
   emoji_picker_flutter: ^2.2.0
   image_picker: ^1.1.2
   gallery_saver_updated: ^3.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -30,7 +30,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       ],
       currentIndex: widget.currentIndex,
       onTap: widget.onTap,
-      backgroundColor: Colors.blue, // Color de fondo del BottomNavigationBar
+      backgroundColor: const Color.fromARGB(
+          255, 243, 33, 219), // Color de fondo del BottomNavigationBar
       selectedItemColor: Colors.white, // Color de los ítems seleccionados
       unselectedItemColor: Colors.grey, // Color de los ítems no seleccionados
     );
